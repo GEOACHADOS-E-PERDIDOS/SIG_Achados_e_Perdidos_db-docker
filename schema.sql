@@ -1,0 +1,57 @@
+-- Create table Posto_retirada
+CREATE TABLE Posto_retirada (
+  ID_posto INTEGER,
+  nome VARCHAR(50),
+  endereco VARCHAR(150),
+  telefone VARCHAR(11),
+  email VARCHAR(50),
+  CONSTRAINT pk_Posto_retirada PRIMARY KEY (ID_posto)
+);
+
+-- Create table User
+CREATE TABLE Usuarios (
+  ID_User INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  Name VARCHAR(50),
+  email VARCHAR(50),
+  Senha_hash VARCHAR(50),
+  data_cadastro DATE,
+  is_admin BOOLEAN
+);
+
+-- Create table Imagem_objeto
+CREATE TABLE Imagem_objeto (
+  ID_imagem INTEGER,
+  caminho_imagem VARCHAR(50),
+  CONSTRAINT pk_Imagem_objeto PRIMARY KEY (ID_imagem)
+);
+
+-- Create table Objeto
+CREATE TABLE Objeto (
+  ID_objeto INTEGER,
+  nome VARCHAR(50),
+  descricao VARCHAR(50),
+  endereco_encontro VARCHAR(150),
+  data_encontro DATE,
+  CONSTRAINT pk_Objeto PRIMARY KEY (ID_objeto)
+);
+
+-- Add new column (foreign key) on table Objeto due conventional-relationship-Posto_retirada-Encontro-Objeto
+ALTER TABLE Objeto
+  ADD COLUMN Posto_retirada_ID_posto INTEGER;
+
+-- Add foreign key constraint on table Objeto due conventional-relationship-Posto_retirada-Encontro-Objeto
+ALTER TABLE Objeto ADD
+  CONSTRAINT fk_Objeto_ref_Posto_retirada
+  FOREIGN KEY (Posto_retirada_ID_posto)
+  REFERENCES Posto_retirada(ID_posto);
+
+-- Add new column (foreign key) on table Objeto due conventional-relationship-Imagem_objeto-Objeto_imagem-Objeto
+ALTER TABLE Objeto
+  ADD COLUMN Imagem_objeto_ID_imagem INTEGER;
+
+-- Add foreign key constraint on table Objeto due conventional-relationship-Imagem_objeto-Objeto_imagem-Objeto
+ALTER TABLE Objeto ADD
+  CONSTRAINT fk_Objeto_ref_Imagem_objeto
+  FOREIGN KEY (Imagem_objeto_ID_imagem)
+  REFERENCES Imagem_objeto(ID_imagem);
+
